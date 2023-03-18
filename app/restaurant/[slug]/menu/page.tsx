@@ -4,7 +4,7 @@ import RestaurantNavbar from "../components/RestaurantNavbar";
 const RestaurantMenu = () => {
   return (
     <div className="bg-white w-[100%] rounded p-3 shadow">
-        <RestaurantNavbar/>
+        {/* <RestaurantNavbar/> */}
         <Menu/>
     </div>
   ) 
