@@ -3,9 +3,17 @@ import RestaurantCard from "./components/RestaurantCard"
 import SearchSideBar from "./components/SearchSideBar"
 import { Location, PrismaClient, Cuisine, PRICE } from '@prisma/client';
 
+
 const prisma = new PrismaClient()
 
-const fetchRestaurantPerCity = (city:string | undefined) => {
+interface SearchParams {
+  city?:string,
+  cuisine?:string,
+  price?: PRICE
+}
+
+const fetchRestaurantPerCity = (searchParams:SearchParams) => {
+  
   const select = {
     id:true,
     name:true,
@@ -15,39 +23,69 @@ const fetchRestaurantPerCity = (city:string | undefined) => {
     cuisine: true,
     slug:true
   }
-  if(!city) return prisma.restaurant.findMany({select})
-  return prisma.restaurant.findMany({
-    where : {
-      location: {
-        name : {
-          equals:city.toLocaleLowerCase()
-        }
+  
+  const where: any = {}
+  if(searchParams.city){
+    const location = {
+      name:{
+        equals:searchParams.city.toLowerCase()
       }
-    },
+    }
+    where.location = location
+  }
+  if(searchParams.cuisine){
+    const cuisine = {
+      name:{
+        equals:searchParams.cuisine.toLowerCase()
+      }
+    }
+    where.cuisine = cuisine
+  }
+  if(searchParams.price){
+    const price = {
+        equals:searchParams.price
+    }
+    where.price = price
+  }
+
+  return prisma.restaurant.findMany({
+    where,
     select
   })
 }
 
+const fetchLocations = () => {
+  return prisma.location.findMany()
+}
+const fetchCuisine = () => {
+  return prisma.cuisine.findMany()
+}
 
-const Search = async ({searchParams}:{searchParams:{city:string}}) => {
-  const restaurants = await fetchRestaurantPerCity(searchParams.city)
-  console.log(restaurants);
+const Search = async (
+  {searchParams
+  }:{
+    searchParams:SearchParams
+  }) => {
   
+  const restaurants = await fetchRestaurantPerCity(searchParams)
 
+  const locations = await fetchLocations()
+  const cuisines = await fetchCuisine()
+  
   return (
     <>
       <Header/>
       <div className="flex py-4 m-auto w-2/3 justify-between items-start">
-          <SearchSideBar/>
-          <div className="w-5/6">
+          <SearchSideBar locations={locations} cuisines={cuisines} searchParams={searchParams}/>
+          <span className="w-5/6">
             {restaurants.length ? 
             restaurants.map(restaurant=>(
-              <RestaurantCard restaurant={restaurant}/>
+              <RestaurantCard key={restaurant.id} restaurant={restaurant}/>
             ))  : (
               <div>Sorry, we found no restaurants in this area</div>
             )
           }
-          </div>
+          </span>
       </div>
 
     </>
