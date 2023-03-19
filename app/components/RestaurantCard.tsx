@@ -7,6 +7,7 @@ interface Props {
 }
 
 const RestaurantCard = ({restaurant}:Props) => {
+  
   return (
     <div className='w-64 h-72 m-3 rounded overflow-hidden border border-gray-400 cursor-pointer'>
       <Link href={`/restaurant/${restaurant.slug}`}>
@@ -15,7 +16,7 @@ const RestaurantCard = ({restaurant}:Props) => {
         <h3 className='font-bold text-2xl m-b2'>{restaurant.name}</h3>
         <div className='flex items-start'>
           <div className="flex mb-2">****</div>
-          <div className="ml-2">77 reviews</div>
+          <div className="ml-2">{restaurant.reviews?.length} reviews</div>
         </div>
         <div className="flex text-reg font-light capitalize">
           <p className="mr-3">{restaurant.cuisine.name}</p>
