@@ -16,7 +16,7 @@ const RestaurantCard = ({restaurant}:Props) => {
         <h3 className='font-bold text-2xl m-b2'>{restaurant.name}</h3>
         <div className='flex items-start'>
           <div className="flex mb-2">****</div>
-          <div className="ml-2">{restaurant.reviews?.length} reviews</div>
+          <div className="ml-2">{restaurant.reviews?.length} review{restaurant.reviews?.length === 1 ?'':'s'}</div>
         </div>
         <div className="flex text-reg font-light capitalize">
           <p className="mr-3">{restaurant.cuisine.name}</p>
