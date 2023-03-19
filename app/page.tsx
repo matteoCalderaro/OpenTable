@@ -15,6 +15,7 @@ export interface RestaurantCardType {
   price: PRICE,
   slug:string,
   reviews?: Review[]
+  
 
 }
 
