@@ -26,9 +26,9 @@ const Stars = ({reviews,rating}:{reviews:Review[],rating:number}) => {
       else stars.push(emptyStar)
     }
 
-    return stars.map(star=>{
+    return stars.map((star,index)=>{
       return(
-        <Image src={star} alt='' className='w-4 h-4 mr-1'/>
+        <Image key={index} src={star} alt='' className='w-4 h-4 mr-1'/>
       )
     })
   }
