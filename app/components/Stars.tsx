@@ -8,8 +8,6 @@ import calculateReviewAverage from './../../utils/calculateReviewAverage';
 
 
 
-
-
 const Stars = ({reviews,rating}:{reviews:Review[],rating:number}) => {
  
   const reviewRating = rating || calculateReviewAverage(reviews)
