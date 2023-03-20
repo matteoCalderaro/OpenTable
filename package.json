@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && prisma generate",
     "start": "next start",
-    "vercel-build":"prisma generate && prisma deploy && deploy && next build",
-    "prisma:generate": "prisma generate",
     "lint": "next lint"
   },
   "dependencies": {
