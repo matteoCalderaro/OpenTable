@@ -34,7 +34,7 @@ const RestaurantCard = ({restaurant}:{restaurant: Restaurant}) => {
         <h2 className="text-3xl">{restaurant.name}</h2>
         <div className="flex items-start">
           <div className="flex mb-2">
-            <Stars reviews={restaurant.reviews}/>
+            <Stars reviews={restaurant.reviews} rating={0}/>
           </div>
           <p className="ml-2 text-sm">{renderRatingText()}</p>
         </div>
