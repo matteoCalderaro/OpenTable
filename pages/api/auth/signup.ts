@@ -58,7 +58,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse) {
       return res.status(400).json({errorMessage:errors[0]})
     }
 
-    const userWithEmail = await prisma.user.findUnique({
+    const userWithEmail = await prisma.user.findFirst({
       where : {
         email
       }
