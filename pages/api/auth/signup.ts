@@ -2,6 +2,8 @@ import { NextApiRequest,NextApiResponse } from "next"
 import validator from 'validator'
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
+import * as jose from 'jose'
+import { setCookie } from 'cookies-next'
 
 const prisma = new PrismaClient()
 
@@ -53,7 +55,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse) {
     })
 
     if(errors.length){
-      return res.status(400).json({msg:errors[0]})
+      return res.status(400).json({errorMessage:errors[0]})
     }
 
     const userWithEmail = await prisma.user.findUnique({
@@ -78,8 +80,23 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse) {
         email
       }
     })
+    const alg = 'HS256'
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET)
+    const token = await new jose.SignJWT({email:user.email})
+      .setProtectedHeader({alg})
+      .setExpirationTime("24h")
+      .sign(secret)
 
 
-    res.status(200).json({mes:user})
+      setCookie('jwt',token, {req,res,maxAge:60 *6 *24})
+
+    return res.status(200).json({
+      firstName: user.first_name,
+      lastName : user.last_name,
+      city: user.city,
+      phone: user.phone,
+      email: user.email
+    })
   }
+  return res.status(404).json('Unknown endpoint')
 }
