@@ -17,7 +17,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
     return res.status(401).json({errorMessage:'Unauthorized request'})
   }
 
-  const user =  await prisma.user.findUnique({
+  const user =  await prisma.user.findFirst({
     where : {
       email: payload.email
     },
